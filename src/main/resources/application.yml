@@ -1,0 +1,18 @@
+spring:
+  data:
+    cassandra:
+      keyspace-name: objective
+      contact-points: 127.0.0.1
+      port: 9042
+#      username : cassandra
+#      password : cassandra
+#      localDatacenter : datacenter1
+
+server:
+  port: 8042
+  error:
+    include-message: always
+
+logging:
+  level:
+    com.bilaldemir: DEBUG

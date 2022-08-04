@@ -1,0 +1,658 @@
+openapi: "3.0.2"
+info:
+  title: API Ajmanre
+  version: "1.0"
+servers:
+  - url: http://localhost:{port}
+    description: The local API server
+    variables:
+      port:
+        enum:
+          - '8042'
+          - '443'
+        default: '8042'
+tags:
+  - name: App-Cassandra
+    description: App cassandra.
+paths:
+  /auth/signin:
+    post:
+      tags:
+        - "signin"
+      summary: "signin"
+      description: "signin"
+      operationId: "signin"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoginRequest"
+      responses:
+        "200":
+          description: "JWT response"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/JwtResponse"
+        "405":
+          description: "Invalid input"
+  /auth/signup:
+    post:
+      tags:
+        - "signup"
+      summary: "signup"
+      description: "signup"
+      operationId: "signup"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SignupRequest"
+      responses:
+        "200":
+          description: "MessageResponse"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MessageResponse"
+        "405":
+          description: "Invalid input"
+  /user/{page}/{size}:
+    get:
+      tags:
+        - "userPageSize"
+      summary: "users listing"
+      operationId: "userPageSize"
+      parameters:
+        - in: path
+          name : page
+          schema:
+            type: integer
+            default: 1
+          required: true
+          description: "page no of the list pagination"
+        - in: path
+          name : size
+          schema:
+            type: integer
+            default: 5
+          required: true
+          description: "size of the pagination"
+      responses:
+        "200":
+          description: "users pagination listing"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserPage"
+  /user/all:
+    get:
+      tags:
+        - "userAll"
+      summary: "all users"
+      operationId: "userAll"
+      responses:
+        "200":
+          description: "user all"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/User"
+  /user/changePassword:
+    post:
+      tags:
+        - "changePassword"
+      summary: "change Password"
+      operationId: "changePassword"
+      parameters:
+        - in: header
+          name: Authorization
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ChangePassword"
+      responses:
+        "200":
+          description: "MessageResponse"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MessageResponse"
+  /lead:
+    post:
+      tags:
+        - "leadAdd"
+      summary: "add lead"
+      operationId: "leadPost"
+      parameters:
+        - in: header
+          name: Authorization
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Lead"
+      responses:
+        "200":
+          description: "MessageResponse"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MessageResponse"
+  /lead/{page}/{size}:
+    get:
+      tags:
+        - "leadPageSize"
+      summary: "lead listing"
+      operationId: "leadPageSize"
+      parameters:
+        - in: path
+          name : page
+          schema:
+            type: integer
+            default: 1
+          required: true
+          description: "page no of the list pagination"
+        - in: path
+          name : size
+          schema:
+            type: integer
+            default: 5
+          required: true
+          description: "size of the pagination"
+      responses:
+        "200":
+          description: "lead pagination listing"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LeadPage"
+  /lead/{leadId}:
+    get:
+      tags:
+        - "leadId"
+      summary: "lead get"
+      operationId: "leadId"
+      parameters:
+        - in: path
+          name : leadId
+          schema:
+            type: string
+          required: true
+          description: "lead details by id"
+      responses:
+        "200":
+          description: "lead pagination listing"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Lead"
+  /lead/{id}:
+    put:
+      tags:
+        - "leadEdit"
+      summary: "edit lead"
+      operationId: "leadPut"
+      parameters:
+        - in: path
+          name : id
+          schema:
+            type: string
+          required: true
+          description: "update lead details by id"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Lead"
+      responses:
+        "200":
+          description: "MessageResponse"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MessageResponse"
+  /lead/all:
+    get:
+      tags:
+        - "leadAll"
+      summary: "all leads order by latest first"
+      operationId: "leadAll"
+      responses:
+        "200":
+          description: "lead all"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Lead"
+  /enquiry:
+    post:
+      tags:
+        - "enquiryAdd"
+      summary: "add enquiry"
+      operationId: "enquiryPost"
+      parameters:
+        - in: header
+          name: Authorization
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Enquiry"
+      responses:
+        "200":
+          description: "MessageResponse"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MessageResponse"
+  /enquiry/{page}/{size}:
+    get:
+      tags:
+        - "enquiryPageSize"
+      summary: "enquiry listing"
+      operationId: "enquiryPageSize"
+      parameters:
+        - in: path
+          name : page
+          schema:
+            type: integer
+            default: 1
+          required: true
+          description: "page no of the list pagination"
+        - in: path
+          name : size
+          schema:
+            type: integer
+            default: 5
+          required: true
+          description: "size of the pagination"
+      responses:
+        "200":
+          description: "lead pagination listing"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EnquiryPage"
+  /enquiry/{enquiryId}:
+    get:
+      tags:
+        - "enquiryId"
+      summary: "enquiry get"
+      operationId: "enquiryId"
+      parameters:
+        - in: path
+          name : enquiryId
+          schema:
+            type: string
+          required: true
+          description: "enquiry details by id"
+      responses:
+        "200":
+          description: "enquiry pagination listing"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Enquiry"
+  /enquiry/{id}:
+    put:
+      tags:
+        - "enquiryEdit"
+      summary: "enquiry edit"
+      operationId: "enquiryPut"
+      parameters:
+        - in: path
+          name : id
+          schema:
+            type: string
+          required: true
+          description: "update enquiry details by id"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Enquiry"
+      responses:
+        "200":
+          description: "MessageResponse"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MessageResponse"
+        "400":
+          description: "Bad input"
+components:
+  securitySchemes:
+    bearerAuth:            # arbitrary name for the security scheme
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    LoginRequest:
+      type: "object"
+      required:
+        - username
+        - password
+      properties:
+        username:
+          type: "string"
+          description: "Username"
+        password:
+          type: "string"
+          description: "Password"
+    JwtResponse:
+      type: "object"
+      properties:
+        accessToken:
+          type: "string"
+          description: "token"
+        type:
+          type: "string"
+          description: "type"
+        id:
+          type: "string"
+          description: "id"
+        username:
+          type: "string"
+          description: "Username"
+        name:
+          type: "string"
+          description: "name"
+        email:
+          type: "string"
+          description: "email"
+        roles:
+          type: "array"
+          description: "roles"
+          items:
+            type: string
+          example: ['admin', 'agent', 'user']
+    Address:
+      type: "object"
+      required:
+        - adressLine1
+        - city
+      properties:
+        adressLine1:
+          type: "string"
+        adressLine2:
+          type: "string"
+        area:
+          type: "string"
+        city:
+          type: "string"
+        country:
+          type: "string"
+        zip:
+          type: "string"
+    Contact:
+      type: "object"
+      required:
+        - name
+      properties:
+        name:
+          type: "string"
+        tel:
+          type: "string"
+        mobile:
+          type: "string"
+        email:
+          type: "string"
+    SignupRequest:
+      type: "object"
+      required:
+        - username
+        - password
+        - email
+        - name
+      properties:
+        username:
+          type: "string"
+          description: "Username"
+        password:
+          type: "string"
+          description: "Password"
+        name:
+          type: "string"
+          description: "name"
+        email:
+          type: "string"
+          description: "email"
+        roles:
+          type: "array"
+          description: "roles, admin, user (individual), super"
+          items:
+            type: string
+          example: ['admin', 'user', 'super']
+    MessageResponse:
+      type: "object"
+      required:
+        - message
+      properties:
+        message:
+          type: "string"
+          description: "Message"
+        identifier:
+          type: "string"
+          description: "If identifier has to be in response"
+    Fileo:
+      type: "object"
+      required:
+        - link
+      properties:
+        link:
+          type: string
+          description: downloadable link
+        name:
+          type: string
+          description: file name
+    UserPage:
+      type: "object"
+      required:
+        - page
+        - size
+        - total
+      properties:
+        page:
+          type: integer
+          description: page no of data result in pagination
+        size:
+          type: integer
+          description: no of data elements in page
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/User"
+          description: data elements list in page
+        total:
+          type: integer
+          format: int64
+          description: total elements in the list
+    User:
+      type: "object"
+      required:
+        - id
+        - updatedAt
+        - username
+        - password
+        - email
+        - name
+      properties:
+        id:
+          type: "string"
+        updatedAt:
+          type: "string"
+          format: "date-time"
+        username:
+          type: "string"
+          description: "Username"
+        password:
+          type: "string"
+          description: "Password"
+        name:
+          type: "string"
+          description: "name"
+        email:
+          type: "string"
+          description: "email"
+        roles:
+          type: "array"
+          description: "roles, admin, agent, agency, user (individual), owner"
+          items:
+            type: string
+          example: ['admin', 'agent', 'agency', 'owner', 'user']
+    ChangePassword:
+      type: "object"
+      required:
+        - username
+        - password
+      properties:
+        username:
+          type: "string"
+        password:
+          type: "string"
+          description: "Password"
+    Lead:
+      type: "object"
+      required:
+        - type
+        - typeId
+        - phoneNo
+      properties:
+        id:
+          type: string
+          description: source identifier
+        updatedAt:
+          type: "string"
+          format: "date-time"
+        type:
+          type: string
+        typeId:
+          type: string
+        name:
+          type: string
+          description: name of the person who is inquiring
+        firstName:
+          type: string
+          description: first name of the person who is inquiring
+        lastName:
+          type: string
+          description: last name of the person who is inquiring
+        email:
+          type: string
+        phoneNo:
+          type: string
+    LeadPage:
+      type: "object"
+      required:
+        - page
+        - size
+        - total
+      properties:
+        page:
+          type: integer
+          description: page no of data result in pagination
+        size:
+          type: integer
+          description: no of data elements in page
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/Lead"
+          description: data elements list in page
+        total:
+          type: integer
+          format: int64
+          description: total elements in the list
+    Enquiry:
+      type: "object"
+      required:
+        - contact
+        - propType
+        - propTypeId
+        - enqType
+        - enqTypeId
+      properties:
+        id:
+          type: string
+          description: source identifier
+        updatedAt:
+          type: "string"
+          format: "date-time"
+        contact:
+          $ref: "#/components/schemas/Contact"
+        enqType:
+          type: string
+        enqTypeId:
+          type: string
+        propType:
+          type: string
+        propTypeId:
+          type: string
+        priceFrom:
+          type: number
+          format: double
+        priceTo:
+          type: number
+          format: double
+        bedMin:
+          type: integer
+        bedMax:
+          type: integer
+        bathMin:
+          type: integer
+        bathMax:
+          type: integer
+        sqftMin:
+          type: number
+          format: double
+        sqftMax:
+          type: number
+          format: double
+        address:
+          $ref: "#/components/schemas/Address"
+        notes:
+          type: string
+          description: notes for the person who is inquiring
+    EnquiryPage:
+      type: "object"
+      required:
+        - page
+        - size
+        - total
+      properties:
+        page:
+          type: integer
+          description: page no of data result in pagination
+        size:
+          type: integer
+          description: no of data elements in page
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/Enquiry"
+          description: data elements list in page
+        total:
+          type: integer
+          format: int64
+          description: total elements in the list
+security:
+  - bearerAuth: []
